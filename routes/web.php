@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +18,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
-Route::get('/hello/{name}', fn (string $name) => "Hello, {$name}");
+//news routes
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+') // указываем что id должно быть только числом (регулярка), чтобы при указании не числа была ошибка 404, а не полное описание проблемы с кодом
+    ->name('news.show'); // указываем нейминг, чтобы можно было здесь менять url при необходимости (и тогда не надо будет менять в других файлах)
 
-Route::get('/info', fn () => "All about project");
+//categories routes
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
-Route::get('/news', fn () => "Новости проекта");
-
-Route::get('/news/onenew', fn () => "Наша самая свежая новость");
+//admin routes
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::resource('/news', AdminNewsController::class);
+    Route::resource('/categories', AdminCategoryController::class);
+});
