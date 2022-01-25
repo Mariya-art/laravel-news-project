@@ -1,11 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        //
     }
 
     /**
@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('feedbacks.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'min:3'],
-            'rus_name' => ['required', 'string', 'min:3'],
+            'feedback' => ['required', 'string', 'min:3'],
         ]);
 
         $data = $request->all();

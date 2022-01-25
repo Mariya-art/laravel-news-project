@@ -14,7 +14,6 @@
 @endsection
 
 @section('content')
-    <x-alert type="success" message="Новость успешно добавлена"></x-alert>
-    <x-alert type="warning" message="Предупреждение!"></x-alert>
-    <x-alert type="danger" message="Критическая ошибка"></x-alert>
+    <div class="table-responsive">
+    </div>
 @endsection 
