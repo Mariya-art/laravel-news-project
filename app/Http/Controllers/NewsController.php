@@ -8,19 +8,21 @@ class NewsController extends Controller
 {
     public function index()
     {
+        $categories = $this->getCategories();
         $news = $this->getNews();
 
         return view('news.index', [
-            'news' => $news
+            'categories' => $categories,
+            'news' => $news,
         ]);
     }
 
     public function show(int $id)
     {
-        $news = $this->getNewsById($id);
+        $newsItem = $this->getNewsById($id);
 
         return view('news.show', [
-            'newsItem' => $news
+            'newsItem' => $newsItem
         ]);
     }
 }

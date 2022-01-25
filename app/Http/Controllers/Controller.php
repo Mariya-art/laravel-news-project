@@ -254,7 +254,7 @@ class Controller extends BaseController
                     'id' => $newsItem['id'],
                     'category_id' => $newsItem['category_id'],
                     'title' => $newsItem['title'],
-                    'description' => $newsItem['description'],
+                    'description' => "<strong>" . $newsItem['description'] . "</strong>", // для вывода тега <strong> во вьюхе указываем скобки {!! !!}
                     'fulltext' => $newsItem['fulltext'],
                 ];
             }
