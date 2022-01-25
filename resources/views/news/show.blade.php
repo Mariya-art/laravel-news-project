@@ -15,7 +15,7 @@
         <br><br>
         <p class="lead">{{ $newsItem['fulltext'] }}</p>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <a href="{{ route('news.index') }}" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Все новости</a>
+            <a href="/" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Все новости</a>
         </div>
     </div>
 </div>

@@ -24,7 +24,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.createNews');
+        return view('admin.news.create');
     }
 
     /**
@@ -35,7 +35,18 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:5']
+        ]);
+
+        $data = $request->all();
+        $inp = file_get_contents(public_path('news/data.json'));
+        $tempArray = json_decode($inp);
+        array_push($tempArray, $data);
+        $jsonData = json_encode($tempArray);
+        file_put_contents(public_path('news/data.json'), $jsonData);
+
+        return response()->json($request->all(), 200);
     }
 
     /**

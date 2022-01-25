@@ -5,15 +5,19 @@
 @endsection
 
 @section('header')
-<div class="row py-lg-1">
+<div class="row py-lg-0">
     <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Все новости</h1>
-        <p>
-            @foreach($categories as $category)
-                <a href="{{ route('categories.show', ['id' => $category['id'], 'name' => $category['name']]) }}" class="btn btn-primary my-2">{{ $category['rus_name'] }}</a>
-            @endforeach
-            <a href="{{ route('news.index') }}" class="btn btn-secondary my-2">Все новости</a>
-        </p>
+        @foreach($categories as $category)
+            <a href="{{ route('categories.show', ['id' => $category['id'], 'name' => $category['name']]) }}" class="btn btn-primary my-2">{{ $category['rus_name'] }}</a>
+        @endforeach
+        <a href="/" class="btn btn-primary my-2">Все новости</a>
+    </div>
+</div>
+<div class="row py-lg-0">
+    <div class="col-lg-6 col-md-8 mx-auto">
+        <a href="{{ route('feedback.create') }}" class="btn btn-secondary my-2">Оставить отзыв</a>
+        <a href="{{ route('subscription.create') }}" class="btn btn-secondary my-2">Подписаться на новости</a>
     </div>
 </div>
 @endsection
