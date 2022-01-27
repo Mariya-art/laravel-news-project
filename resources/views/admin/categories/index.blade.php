@@ -15,5 +15,30 @@
 
 @section('content')
     <div class="table-responsive">
+    <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Название категории</th>
+                    <th>Название на рус.языке</th>
+                    <th>Опции</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($categories as $category)
+                    <tr>
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->name }}</td>
+                        <td>{{ $category->rus_name }}</td>
+                        <td>
+                            <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">Ред.</a>
+                            <a href="javascript:;" style="color:red;">Уд.</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6">Записей нет</td></tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 @endsection
