@@ -14,9 +14,27 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.feedbacks.*')) active @endif" href="{{ route('admin.feedbacks.index') }}">
+                    <span data-feather="layers"></span>
+                    Отзывы
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.subscriptions.*')) active @endif" href="{{ route('admin.subscriptions.index') }}">
+                    <span data-feather="layers"></span>
+                    Подписки
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.categories.*')) active @endif" href="{{ route('admin.categories.index') }}">
                     <span data-feather="file"></span>
                     Категории
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.sources.*')) active @endif" href="{{ route('admin.sources.index') }}">
+                    <span data-feather="file"></span>
+                    Источники
                 </a>
             </li>
         </ul>

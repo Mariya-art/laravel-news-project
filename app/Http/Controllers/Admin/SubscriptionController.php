@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Subscription;
 use App\Models\Category;
@@ -16,7 +16,11 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $subscriptions = Subscription::query()->paginate(10);
+
+        return view('admin.subscriptions.index', [
+            'subscriptions' => $subscriptions
+        ]);
     }
 
     /**
@@ -26,11 +30,7 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-
-        return view('subscriptions.create', [
-            'categories' => $categories,
-        ]);
+        //
     }
 
     /**
@@ -41,21 +41,7 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3'],
-            'mail' => ['required', 'string', 'min:5']
-        ]);
-
-        $created = Subscription::create( // возвращает созданную запись или false
-            $request->only(['name', 'phone', 'mail', 'category_id'])
-        );
-
-        if($created) {
-            return redirect()->route('news.index')
-                ->with('success', 'Подписка на новости успешно оформлена');
-        }
-        return back()->with('error', 'Не удалось оформить подписку')
-            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
+        //
     }
 
     /**
@@ -64,7 +50,7 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Subscription $subscription)
     {
         //
     }
@@ -75,9 +61,14 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Subscription $subscription)
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.subscriptions.edit', [
+            'subscription' => $subscription,
+            'categories' => $categories,
+        ]); 
     }
 
     /**
@@ -87,9 +78,16 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Subscription $subscription)
     {
-        //
+        $updated = $subscription->fill($request->only(['name', 'phone', 'mail', 'category_id']))->save();
+
+        if($updated) {
+            return redirect()->route('admin.subscriptions.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Не удалось обновить запись')
+            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
     }
 
     /**
@@ -98,7 +96,7 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Subscription $subscription)
     {
         //
     }

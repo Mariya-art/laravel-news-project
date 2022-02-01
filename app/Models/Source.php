@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,16 +13,15 @@ class Source extends Model
 
     protected $table = 'sources';
 
-    public function getSources(): array
-    {
-        return DB::table($this->table)
-            ->select(['id', 'name', 'real_name', 'site', 'status'])
-            ->get()
-            ->toArray(); // метод get() вернет коллекцию, а мы ждем массив, поэтому используем toArray()
-    }
+    protected $fillable = [
+        'name', 
+        'real_name',
+        'site',
+        'status'
+    ];
 
-    public function getSourceById(int $id)
+    public function news(): HasMany
     {
-        return DB::table($this->table)->find($id);
+        return $this->hasMany(News::class, 'source_id', 'id');
     }
 }

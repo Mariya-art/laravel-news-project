@@ -13,11 +13,7 @@
 @endsection
 
 @section('content')
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.message')
     <div>
         <form method="post" action="{{ route('subscription.store') }}">
             @csrf
@@ -31,14 +27,11 @@
                 <label for="mail">E-mail</label>
                 <input type="text" class="form-control" name="mail" id="mail" value="{{ old('mail') }}"><br>
 
-                <label for="type">Выберите тип новостей, на которые хотите подписаться</label>
-                <select class="form-control" name="type" id="type">
-                    <option @if(old('type') === 'Политика') selected @endif>Все новости</option>
-                    <option @if(old('type') === 'Все новости') selected @endif>Политика</option>
-                    <option @if(old('type') === 'Экономика') selected @endif>Экономика</option>
-                    <option @if(old('type') === 'Культура') selected @endif>Культура</option>
-                    <option @if(old('type') === 'Наука') selected @endif>Наука</option>
-                    <option @if(old('type') === 'Спорт') selected @endif>Спорт</option>
+                <label for="category_id">Выберите тип новостей, на которые хотите подписаться</label>
+                <select class="form-control" name="category_id" id="category_id">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->rus_name }}</option>
+                    @endforeach
                 </select><br>
             </div>
             <button type="submit" class="btn btn-success" style="float: right;">Сохранить</button>

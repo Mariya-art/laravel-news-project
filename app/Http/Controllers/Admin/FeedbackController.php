@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Feedback;
 use App\Http\Controllers\Controller;
@@ -15,7 +15,11 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        //
+        $feedbacks = Feedback::query()->paginate(10);
+
+        return view('admin.feedbacks.index', [
+            'feedbacks' => $feedbacks
+        ]);
     }
 
     /**
@@ -25,7 +29,7 @@ class FeedbackController extends Controller
      */
     public function create()
     {
-        return view('feedbacks.create');
+        //
     }
 
     /**
@@ -36,30 +40,16 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3'],
-            'feedback' => ['required', 'string', 'min:3'],
-        ]);
-
-        $created = Feedback::create( // возвращает созданную запись или false
-            $request->only(['name', 'feedback'])
-        );
-
-        if($created) {
-            return redirect()->route('news.index')
-                ->with('success', 'Ваш отзыв добавлен');
-        }
-        return back()->with('error', 'Не удалось добавить отзыв')
-            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Feedback $feedback
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Feedback $feedback)
     {
         //
     }
@@ -67,33 +57,42 @@ class FeedbackController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Feedback $feedback
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Feedback $feedback)
     {
-        //
+        return view('admin.feedbacks.edit', [
+            'feedback' => $feedback,
+        ]); 
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Feedback $feedback
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Feedback $feedback)
     {
-        //
+        $updated = $feedback->fill($request->only(['name', 'feedback', 'status']))->save();
+
+        if($updated) {
+            return redirect()->route('admin.feedbacks.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Не удалось обновить запись')
+            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Feedback $feedback
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Feedback $feedback)
     {
         //
     }
