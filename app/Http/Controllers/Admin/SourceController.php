@@ -1,15 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\News;
-use App\Models\Category;
 use App\Models\Source;
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class SourceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,14 +15,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::query()->with('category')
-            ->with('source')
-            //->select(News::$availableFields)
-            ->paginate(10);
+        $sources = Source::query()->with('news')->get();
 
-        return view('admin.news.index', [
-            'newsList' => $news
-        ]);        
+        return view('admin.sources.index', [
+            'sources' => $sources
+        ]);
     }
 
     /**
@@ -35,13 +29,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $sources = Source::all();
-
-        return view('admin.news.create', [
-            'categories' => $categories,
-            'sources' => $sources,
-        ]);
+        return view('admin.sources.create');
     }
 
     /**
@@ -53,17 +41,17 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:5']
+            'name' => ['required', 'string', 'min:3'],
+            'real_name' => ['required', 'string', 'min:3'],
+            'site' => ['required', 'string', 'min:3'],
         ]);
 
-        $created = News::create( // возвращает созданную запись или false
-            $request->only(['category_id', 'source_id', 'title', 'description', 'fulltext', 'status']) + [
-                'slug' => Str::slug($request->input('title'))
-            ]
+        $created = Source::create( // возвращает созданную запись или false
+            $request->only(['name', 'real_name', 'site', 'status'])
         );
 
         if($created) {
-            return redirect()->route('admin.news.index')
+            return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно добавлена');
         }
         return back()->with('error', 'Не удалось добавить запись')
@@ -73,10 +61,10 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  News $news
+     * @param  Source $source
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Source $source)
     {
         //
     }
@@ -84,18 +72,13 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  News $news
+     * @param  Source $source
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Source $source)
     {
-        $categories = Category::all();
-        $sources = Source::all();
-
-        return view('admin.news.edit', [
-            'news' => $news,
-            'categories' => $categories,
-            'sources' => $sources,
+        return view('admin.sources.edit', [
+            'source' => $source,
         ]); 
     }
 
@@ -103,17 +86,15 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  News $news
+     * @param  Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Source $source)
     {
-        $updated = $news->fill($request->only(['category_id', 'source_id', 'title', 'description', 'fulltext', 'status']) + [
-            'slug' => Str::slug($request->input('title'))
-        ])->save();
+        $updated = $source->fill($request->only(['name', 'real_name', 'site', 'status']))->save();
 
         if($updated) {
-            return redirect()->route('admin.news.index')
+            return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно обновлена');
         }
         return back()->with('error', 'Не удалось обновить запись')
@@ -123,10 +104,10 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  News $news
+     * @param  Source $source
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Source $source)
     {
         //
     }

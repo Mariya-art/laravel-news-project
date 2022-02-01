@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 @section('title')
-    Админка - Категории
+    Админка - Источники
 @endsection
 
 @section('header')
-    <h1 class="h2">Категории</h1>
+    <h1 class="h2">Источники</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a href="{{ route('admin.categories.create') }}" type="button" class="btn btn-sm btn-outline-secondary">Добавить категорию</a>
+            <a href="{{ route('admin.sources.create') }}" type="button" class="btn btn-sm btn-outline-secondary">Добавить источник</a>
         </div>
     </div>
 @endsection
@@ -21,20 +21,24 @@
                 <tr>
                     <th>#ID</th>
                     <th>Кол-во новостей</th>
-                    <th>Название категории</th>
-                    <th>Название на рус.языке</th>
+                    <th>Источник</th>
+                    <th>Название бренда</th>
+                    <th>Сайт</th>
+                    <th>Статус</th>
                     <th>Опции</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($categories as $category)
+                @forelse($sources as $source)
                     <tr>
-                        <td>{{ $category->id }}</td>
-                        <td>{{ optional($category->news)->count() }}</td>
-                        <td>{{ $category->name }}</td>
-                        <td>{{ $category->rus_name }}</td>
+                        <td>{{ $source->id }}</td>
+                        <td>{{ optional($source->news)->count() }}</td>
+                        <td>{{ $source->name }}</td>
+                        <td>{{ $source->real_name }}</td>
+                        <td>{{ $source->site }}</td>
+                        <td>{{ $source->status }}</td>
                         <td>
-                            <a href="{{ route('admin.categories.edit', ['category' => $category]) }}">Ред.</a>
+                            <a href="{{ route('admin.sources.edit', ['source' => $source]) }}">Ред.</a>
                             <a href="javascript:;" style="color:red;">Уд.</a>
                         </td>
                     </tr>

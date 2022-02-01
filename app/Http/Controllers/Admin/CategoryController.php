@@ -15,8 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $model = new Category();
-        $categories = $model->getCategories();
+        $categories = Category::query()->with('news')->get();
 
         return view('admin.categories.index', [
             'categories' => $categories
@@ -46,23 +45,25 @@ class CategoryController extends Controller
             'rus_name' => ['required', 'string', 'min:3'],
         ]);
 
-        $data = $request->all();
-        $inp = file_get_contents(public_path('news/data.json'));
-        $tempArray = json_decode($inp);
-        array_push($tempArray, $data);
-        $jsonData = json_encode($tempArray);
-        file_put_contents(public_path('news/data.json'), $jsonData);
+        $created = Category::create( // возвращает созданную запись или false
+            $request->only(['name', 'rus_name'])
+        );
 
-        return response()->json($request->all(), 200);
+        if($created) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
+        return back()->with('error', 'Не удалось добавить запись')
+            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
         //
     }
@@ -70,33 +71,42 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', [
+            'category' => $category,
+        ]); 
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $updated = $category->fill($request->only(['name', 'rus_name']))->save();
+
+        if($updated) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Не удалось обновить запись')
+            ->withInput(); // чтобы сохранились данные, которые вводил пользователь
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
         //
     }

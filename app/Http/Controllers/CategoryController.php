@@ -10,12 +10,12 @@ class CategoryController extends Controller
 {
     public function show(int $id)
     {
-        $model = new News();
-        $news = $model->getNewsByCategoryId($id);
+        $news = News::query()->select(
+            News::$availableFields
+        )->where('category_id', $id)->get();
 
-        $modelCategory = new Category();
-        $categories = $modelCategory->getCategories();
-        $oneCategory = $modelCategory->getCategoryById($id);
+        $categories = Category::query()->get();
+        $oneCategory = Category::findOrFail($id);
 
         return view('categories.show', [
             'categories' => $categories,

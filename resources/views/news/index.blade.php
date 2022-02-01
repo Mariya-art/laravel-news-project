@@ -6,7 +6,7 @@
 
 @section('header')
 <div class="row py-lg-0">
-    <div class="col-lg-6 col-md-8 mx-auto">
+    <div class="col-lg-9 col-md-8 mx-auto">
         <h1 class="fw-light">Все новости</h1>
         @foreach($categories as $category)
             <a href="{{ route('categories.show', ['id' => $category->id, 'name' => $category->name]) }}" class="btn btn-primary my-2">{{ $category->rus_name }}</a>
@@ -15,10 +15,11 @@
     </div>
 </div>
 <div class="row py-lg-0">
-    <div class="col-lg-6 col-md-8 mx-auto">
+    <div class="col-lg-9 col-md-8 mx-auto">
         <a href="{{ route('feedback.create') }}" class="btn btn-secondary my-2">Оставить отзыв</a>
         <a href="{{ route('subscription.create') }}" class="btn btn-secondary my-2">Подписаться на новости</a>
     </div>
+    @include('inc.message')
 </div>
 @endsection
 
@@ -32,13 +33,13 @@
             <div class="card-body">
                 <div class="card-header">
                     <strong>
-                        <a href="{{ route('news.show', ['id' => $news->id]) }}">{{ $news->title }}</a>
+                        <a href="{{ route('news.show', ['news' => $news]) }}">{{ $news->title }}</a>
                     </strong>
                 </div>
                 <p class="card-text"><em>{{ $news->description }}</em></p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{{ route('news.show', ['id' => $news->id]) }}" type="button" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                        <a href="{{ route('news.show', ['news' => $news]) }}" type="button" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                     </div>
                     <small class="text-muted">{{ now('Europe/Moscow') }}</small>
                 </div>

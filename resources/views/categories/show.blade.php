@@ -32,13 +32,13 @@
             <div class="card-body">
                 <div class="card-header">
                     <strong>
-                        <a href="{{ route('news.show', ['id' => $news->id]) }}">{{ $news->title }}</a>
+                        <a href="{{ route('news.show', ['news' => $news]) }}">{{ $news->title }}</a>
                     </strong>
                 </div>
                 <p class="card-text"><em>{{ $news->description }}</em></p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{{ route('news.show', ['id' => $news->id]) }}" type="button" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                        <a href="{{ route('news.show', ['news' => $news]) }}" type="button" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                     </div>
                     <small class="text-muted">{{ now('Europe/Moscow') }}</small>
                 </div>
