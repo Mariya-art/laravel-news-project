@@ -19,13 +19,16 @@
             @method('put')
             <div class="form-group">
                 <label for="name">Источник</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ $source->name }}"><br>
+                <input type="text" class="form-control" name="name" id="name" value="{{ $source->name }}">
+                @error('name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="real_name">Название бренда</label>
-                <input type="text" class="form-control" name="real_name" id="real_name" value="{{ $source->real_name }}"><br>
+                <input type="text" class="form-control" name="real_name" id="real_name" value="{{ $source->real_name }}">
+                @error('real_name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="site">Сайт</label>
-                <input type="text" class="form-control" name="site" id="site" value="{{ $source->site }}"><br>
+                <input type="text" class="form-control" name="site" id="site" value="{{ $source->site }}">
+                @error('site') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="status">Статус</label>
                 <select class="form-control" name="status" id="status">

@@ -21,11 +21,24 @@
         <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
+        <!-- <server name="DB_CONNECTION" value="mysql_test"/>
+        <server name="DB_DATABASE" value="example_app_test"/> -->
         <!-- <server name="DB_CONNECTION" value="sqlite"/> -->
         <!-- <server name="DB_DATABASE" value=":memory:"/> -->
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
+        <!-- <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="DB_CONNECTION" value="mysql_test"/>
+        <env name="DB_HOST" value="mysql_test"/>
+        <env name="DB_PORT" value="3307"/>
+        <env name="DB_DATABASE" value="example_app_test"/>
+        <env name="DB_USERNAME" value="sail"/>
+        <env name="DB_PASSWORD" value="password"/>
+        <env name="FORWARD_DB_PORT" value="33057"/> -->
     </php>
 </phpunit>

@@ -34,13 +34,16 @@
                 </select><br>
 
                 <label for="title">Заголовок новости</label>
-                <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}"><br>
+                <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+                @error('title') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="description">Краткое описание</label>
-                <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea><br>
+                <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea>
+                @error('description') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="fulltext">Полный текст новости</label>
-                <textarea class="form-control" name="fulltext" id="fulltext">{!! old('fulltext') !!}</textarea><br>
+                <textarea class="form-control" name="fulltext" id="fulltext">{!! old('fulltext') !!}</textarea>
+                @error('fulltext') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="status">Статус</label>
                 <select class="form-control" name="status" id="status">

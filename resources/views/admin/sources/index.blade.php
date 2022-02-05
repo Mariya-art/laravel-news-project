@@ -39,7 +39,7 @@
                         <td>{{ $source->status }}</td>
                         <td>
                             <a href="{{ route('admin.sources.edit', ['source' => $source]) }}">Ред.</a>
-                            <a href="javascript:;" style="color:red;">Уд.</a>
+                            <a href="javascript:;" class="delete" rel="{{ $source->id }}" style="color:red;">Уд.</a>
                         </td>
                     </tr>
                 @empty
@@ -49,3 +49,33 @@
         </table>
     </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const el = document.querySelectorAll(".delete");
+            el.forEach(function (e, k) {
+                e.addEventListener('click', function() {
+                    const id = e.getAttribute("rel");
+                    if(confirm("Подтверждаете удаление записи с #ID = " + id + "?")) {
+                        send('/admin/sources/' + id).then(() => {
+                            location.reload();
+                        });
+                    }
+                });
+            });
+        });
+
+        async function send(url) {
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            let result = await response.json();
+            return result.ok;
+        }
+    </script>
+@endpush

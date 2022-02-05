@@ -6,6 +6,8 @@ use App\Models\Subscription;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Subscriptions\CreateRequest;
+use App\Http\Requests\Subscriptions\EditRequest;
 
 class SubscriptionController extends Controller
 {
@@ -36,19 +38,17 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
+        /*$request->validate([
             'name' => ['required', 'string', 'min:3'],
             'mail' => ['required', 'string', 'min:5']
-        ]);
+        ]);*/
 
-        $created = Subscription::create( // возвращает созданную запись или false
-            $request->only(['name', 'phone', 'mail', 'category_id'])
-        );
+        $created = Subscription::create($request->validated());
 
         if($created) {
             return redirect()->route('news.index')

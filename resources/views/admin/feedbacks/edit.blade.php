@@ -19,10 +19,12 @@
             @method('put')
             <div class="form-group">
                 <label for="name">Имя клиента</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ $feedback->name }}"><br>
+                <input type="text" class="form-control" name="name" id="name" value="{{ $feedback->name }}">
+                @error('name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="feedback">Отзыв клиента</label>
-                <textarea class="form-control" name="feedback" id="feedback">{!! $feedback->feedback !!}</textarea><br>
+                <textarea class="form-control" name="feedback" id="feedback">{!! $feedback->feedback !!}</textarea>
+                @error('feedback') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="status">Статус</label>
                 <select class="form-control" name="status" id="status">

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\News;
 use App\Models\Category;
 use App\Models\Source;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
+//use Illuminate\Validation\ValidationException;
 
 class NewsController extends Controller
 {
@@ -47,17 +51,23 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);
+        //$request->validate(); // оба способа валидации неверны, т.к. валидация в контроллере, вместо них используем класс CreateRequest 
+        /*
+        try {
+            $this->validate($request, [
+                'title' => ['required', 'string', 'min:5']
+            ]);
+        }catch (ValidationException $e) {
+            dd($e->validator->getMessageBag());
+        }
+        */
 
-        $created = News::create( // возвращает созданную запись или false
-            $request->only(['category_id', 'source_id', 'title', 'description', 'fulltext', 'status']) + [
+        $created = News::create($request->validated() + [
                 'slug' => Str::slug($request->input('title'))
             ]
         );
@@ -102,13 +112,13 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest  $request
      * @param  News $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(EditRequest $request, News $news)
     {
-        $updated = $news->fill($request->only(['category_id', 'source_id', 'title', 'description', 'fulltext', 'status']) + [
+        $updated = $news->fill($request->validated() + [
             'slug' => Str::slug($request->input('title'))
         ])->save();
 
@@ -128,6 +138,11 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        try{
+            $news->delete();
+            return response()->json('ok');
+        }catch(\Exception $e) {
+            Log::error("Error delete news item");
+        }
     }
 }

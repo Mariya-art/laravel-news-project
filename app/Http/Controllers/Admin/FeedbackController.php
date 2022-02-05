@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Feedback;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Feedbacks\CreateRequest;
+use App\Http\Requests\Feedbacks\EditRequest;
 
 class FeedbackController extends Controller
 {
@@ -70,13 +73,13 @@ class FeedbackController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest $request
      * @param  Feedback $feedback
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Feedback $feedback)
+    public function update(EditRequest $request, Feedback $feedback)
     {
-        $updated = $feedback->fill($request->only(['name', 'feedback', 'status']))->save();
+        $updated = $feedback->fill($request->validated())->save();
 
         if($updated) {
             return redirect()->route('admin.feedbacks.index')
@@ -94,6 +97,11 @@ class FeedbackController extends Controller
      */
     public function destroy(Feedback $feedback)
     {
-        //
+        try{
+            $feedback->delete();
+            return response()->json('ok');
+        }catch(\Exception $e) {
+            Log::error("Error delete feedback item");
+        }
     }
 }

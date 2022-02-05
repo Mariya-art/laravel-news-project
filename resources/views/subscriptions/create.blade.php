@@ -19,13 +19,15 @@
             @csrf
             <div class="form-group">
                 <label for="name">Ваше имя</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}"><br>
+                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}">
+                @error('name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="phone">Номер телефона</label>
                 <input type="text" class="form-control" name="phone" id="phone" value="{{ old('phone') }}"><br>
 
                 <label for="mail">E-mail</label>
-                <input type="text" class="form-control" name="mail" id="mail" value="{{ old('mail') }}"><br>
+                <input type="text" class="form-control" name="mail" id="mail" value="{{ old('mail') }}">
+                @error('mail') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="category_id">Выберите тип новостей, на которые хотите подписаться</label>
                 <select class="form-control" name="category_id" id="category_id">

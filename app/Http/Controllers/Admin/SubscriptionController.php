@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Subscription;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Subscriptions\CreateRequest;
+use App\Http\Requests\Subscriptions\EditRequest;
 
 class SubscriptionController extends Controller
 {
@@ -74,13 +77,13 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subscription $subscription)
+    public function update(EditRequest $request, Subscription $subscription)
     {
-        $updated = $subscription->fill($request->only(['name', 'phone', 'mail', 'category_id']))->save();
+        $updated = $subscription->fill($request->validated())->save();
 
         if($updated) {
             return redirect()->route('admin.subscriptions.index')
@@ -98,6 +101,11 @@ class SubscriptionController extends Controller
      */
     public function destroy(Subscription $subscription)
     {
-        //
+        try{
+            $subscription->delete();
+            return response()->json('ok');
+        }catch(\Exception $e) {
+            Log::error("Error delete subscription item");
+        }
     }
 }
