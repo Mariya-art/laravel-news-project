@@ -19,18 +19,21 @@
             @method('put')
             <div class="form-group">
                 <label for="name">Имя подписчика</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ $subscription->name }}"><br>
+                <input type="text" class="form-control" name="name" id="name" value="{{ $subscription->name }}">
+                @error('name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="phone">Номер телефона</label>
                 <input type="text" class="form-control" name="phone" id="phone" value="{{ $subscription->phone }}"><br>
 
                 <label for="mail">E-mail</label>
-                <input type="text" class="form-control" name="mail" id="mail" value="{{ $subscription->mail }}"><br>
+                <input type="text" class="form-control" name="mail" id="mail" value="{{ $subscription->mail }}">
+                @error('mail') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="category_id">Категория новостей, на которую оформлена подписка</label>
                 <select class="form-control" name="category_id" id="category_id">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->rus_name }}</option>
+                        <option value="{{ $category->id }}"
+                        @if($category->id === $subscription->category_id) selected @endif>{{ $category->rus_name }}</option>
                     @endforeach
                 </select><br>
             </div>

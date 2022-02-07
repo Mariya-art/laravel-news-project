@@ -2,12 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\Subscription;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class SubscriptionTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -21,17 +24,22 @@ class SubscriptionTest extends TestCase
         $response->assertViewIs('subscriptions.create');
     }
 
-    public function testSubscriptionCreated() // получаем подписку в json-формате
+    public function testSubscriptionCreated() // создаем подписку
     {
-        $responseData = [
+        $category = Category::factory()->create();
+        $responseData = Subscription::factory()->definition();
+        $responseData = $responseData + [
+            'category_id' => $category->id,
+        ];
+        /*$responseData = [
             'name' => 'Alisa',
             'phone' => '+79001234567',
             'mail' => 'alisa@alisa.ru',
-            'type' => 'Культура'
-        ];
+            'category_id' => 3
+        ];*/
         $response = $this->post(route('subscription.store'), $responseData);
 
-        $response->assertJson($responseData);
-        $response->assertStatus(200);
+        //$response->assertJson($responseData);
+        $response->assertStatus(302);
     }
 }

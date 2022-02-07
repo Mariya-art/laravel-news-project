@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Feedbacks\CreateRequest;
+use App\Http\Requests\Feedbacks\EditRequest;
 
 class FeedbackController extends Controller
 {
@@ -31,19 +33,17 @@ class FeedbackController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
+        /*$request->validate([
             'name' => ['required', 'string', 'min:3'],
             'feedback' => ['required', 'string', 'min:3'],
-        ]);
+        ]);*/
 
-        $created = Feedback::create( // возвращает созданную запись или false
-            $request->only(['name', 'feedback'])
-        );
+        $created = Feedback::create($request->validated());
 
         if($created) {
             return redirect()->route('news.index')

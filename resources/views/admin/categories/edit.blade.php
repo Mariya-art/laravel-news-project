@@ -19,10 +19,12 @@
             @method('put')
             <div class="form-group">
                 <label for="name">Наименование категории</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ $category->name }}"><br>
+                <input type="text" class="form-control" name="name" id="name" value="{{ $category->name }}">
+                @error('name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="rus_name">Наименование на русском языке</label>
-                <input type="text" class="form-control" name="rus_name" id="rus_name" value="{{ $category->rus_name }}"><br>
+                <input type="text" class="form-control" name="rus_name" id="rus_name" value="{{ $category->rus_name }}">
+                @error('rus_name') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
             </div>
             <button type="submit" class="btn btn-success" style="float: right;">Сохранить</button>
         </form>

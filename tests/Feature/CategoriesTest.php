@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CategoriesTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -15,7 +17,9 @@ class CategoriesTest extends TestCase
      */
     public function testCategoriesShow() // доступна страница конкретной категории
     {
-        $response = $this->get(route('categories.show', ['id' => mt_rand(1, 5)])); // пока мы не передаем id, поэтому берем рандом от 1 до 5
+        $category = Category::factory()->create();
+
+        $response = $this->get(route('categories.show', ['id' => $category->id])); // пока мы не передаем id, поэтому берем рандом от 1 до 5
 
         $response->assertStatus(200);
         $response->assertViewIs('categories.show');
@@ -39,13 +43,10 @@ class CategoriesTest extends TestCase
 
     public function testCategoryAdminCreated() // категория создается в админке
     {
-        $responseData = [
-            'name' => 'travels',
-            'rus_name' => 'Путешествия'
-        ];
-        $response = $this->post(route('admin.categories.store'), $responseData);
+        $responseData = Category::factory()->definition();
 
-        $response->assertJson($responseData);
-        $response->assertStatus(200);
+        $response = $this->post(route('admin.categories.store'), $responseData);
+        //$response->assertJson($responseData);
+        $response->assertStatus(302);
     }
 }

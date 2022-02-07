@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Source;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Sources\CreateRequest;
+use App\Http\Requests\Sources\EditRequest;
 
 class SourceController extends Controller
 {
@@ -35,20 +38,18 @@ class SourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
+        /*$request->validate([
             'name' => ['required', 'string', 'min:3'],
             'real_name' => ['required', 'string', 'min:3'],
             'site' => ['required', 'string', 'min:3'],
-        ]);
+        ]);*/
 
-        $created = Source::create( // возвращает созданную запись или false
-            $request->only(['name', 'real_name', 'site', 'status'])
-        );
+        $created = Source::create($request->validated());
 
         if($created) {
             return redirect()->route('admin.sources.index')
@@ -85,13 +86,13 @@ class SourceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest $request
      * @param  Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(EditRequest $request, Source $source)
     {
-        $updated = $source->fill($request->only(['name', 'real_name', 'site', 'status']))->save();
+        $updated = $source->fill($request->validated())->save();
 
         if($updated) {
             return redirect()->route('admin.sources.index')
@@ -109,6 +110,11 @@ class SourceController extends Controller
      */
     public function destroy(Source $source)
     {
-        //
+        try{
+            $source->delete();
+            return response()->json('ok');
+        }catch(\Exception $e) {
+            Log::error("Error delete source item");
+        }
     }
 }

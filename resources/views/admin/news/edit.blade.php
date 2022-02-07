@@ -23,25 +23,32 @@
                 <label for="category_id">Категория</label>
                 <select class="form-control" name="category_id" id="category_id">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->rus_name }}</option>
+                        <option value="{{ $category->id }}"
+                        @if($category->id === $news->category_id) selected @endif>{{ $category->rus_name }}</option>
                     @endforeach
-                </select><br>
+                </select>
+                @error('category_id') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="source_id">Источник</label>
                 <select class="form-control" name="source_id" id="source_id">
                     @foreach($sources as $source)
-                        <option value="{{ $source->id }}">{{ $source->real_name }}</option>
+                        <option value="{{ $source->id }}"
+                        @if($source->id === $news->source_id) selected @endif>{{ $source->real_name }}</option>
                     @endforeach
-                </select><br>
+                </select>
+                @error('source_id') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="title">Заголовок новости</label>
-                <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}"><br>
+                <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
+                @error('title') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="description">Краткое описание</label>
-                <textarea class="form-control" name="description" id="description">{!! $news->description !!}</textarea><br>
+                <textarea class="form-control" name="description" id="description">{!! $news->description !!}</textarea>
+                @error('description') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="fulltext">Полный текст новости</label>
-                <textarea class="form-control" name="fulltext" id="fulltext">{!! $news->fulltext !!}</textarea><br>
+                <textarea class="form-control" name="fulltext" id="fulltext">{!! $news->fulltext !!}</textarea>
+                @error('fulltext') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
                 <label for="status">Статус</label>
                 <select class="form-control" name="status" id="status">
