@@ -1,11 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SourceController as AdminSourceController;
 use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
@@ -33,13 +36,25 @@ Route::get('/news/{news}', [NewsController::class, 'show'])
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
 //admin routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-    Route::view('/', 'admin.index')->name('index');
-    Route::resource('/news', AdminNewsController::class);
-    Route::resource('/categories', AdminCategoryController::class);
-    Route::resource('/sources', AdminSourceController::class);
-    Route::resource('/feedbacks', AdminFeedbackController::class);
-    Route::resource('/subscriptions', AdminSubscriptionController::class);
+
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('/account', AccountController::class)->name('account');
+
+    Route::get('/account/logout', function() {
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('account.logout');
+
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
+        Route::view('/', 'admin.index')->name('index');
+        Route::resource('/news', AdminNewsController::class);
+        Route::resource('/users', AdminUserController::class);
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/sources', AdminSourceController::class);
+        Route::resource('/feedbacks', AdminFeedbackController::class);
+        Route::resource('/subscriptions', AdminSubscriptionController::class);
+    });
 });
 
 //other routes
@@ -53,3 +68,15 @@ Route::get('/collection', function() {
         return mb_strtoupper($item);
     })->sort());
 });
+
+Route::get('/session', function() {
+    if(session()->has('title')) {
+        //dd(session()->all(), session()->get('title')); // посмотреть созданную сессию
+        session()->forget('title');
+    }
+    session(['title' => 'name']);
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -26,6 +26,7 @@ class EditRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3'],
             'feedback' => ['required', 'string', 'min:3'],
+            'status' => ['required', 'string'],
         ];
     }
             

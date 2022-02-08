@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Sources;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,12 +25,11 @@ class EditRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
-            'real_name' => ['required', 'string', 'min:3'],
-            'site' => ['required', 'string', 'min:3'],
-            'status' => ['required', 'string'],
+            'email' => ['required', 'string', 'min:3'],
+            'is_admin' => ['nullable', 'boolean'],
         ];
     }
-                        
+
     public function messages(): array
     {
         return parent::messages();
@@ -39,9 +38,7 @@ class EditRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => '"Источник"',
-            'real_name' => '"Название бренда"',
-            'site' => '"Сайт"',
+            'name' => '"Имя"',
         ];
     }
 }
