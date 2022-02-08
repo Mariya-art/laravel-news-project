@@ -6,7 +6,7 @@
 
 @section('header')
 <div class="row py-lg-0">
-    <div class="col-lg-6 col-md-8 mx-auto">
+    <div class="col-lg-9 col-md-8 mx-auto">
         <h1 class="fw-light">{{ $oneCategory->rus_name }}</h1>
         @foreach($categories as $category)
             <a href="{{ route('categories.show', ['id' => $category->id, 'name' => $category->name]) }}" class="btn btn-primary my-2">{{ $category->rus_name }}</a>

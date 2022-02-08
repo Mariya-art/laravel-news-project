@@ -14,6 +14,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.users.*')) active @endif" href="{{ route('admin.users.index') }}">
+                    <span data-feather="layers"></span>
+                    Пользователи
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.feedbacks.*')) active @endif" href="{{ route('admin.feedbacks.index') }}">
                     <span data-feather="layers"></span>
                     Отзывы
