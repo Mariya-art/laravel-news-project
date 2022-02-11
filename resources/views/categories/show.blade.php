@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="row py-lg-0">
-    <div class="col-lg-6 col-md-8 mx-auto">
+    <div class="col-lg-9 col-md-8 mx-auto">
         <a href="{{ route('feedback.create') }}" class="btn btn-secondary my-2">Оставить отзыв</a>
         <a href="{{ route('subscription.create') }}" class="btn btn-secondary my-2">Подписаться на новости</a>
     </div>
@@ -27,7 +27,12 @@
 @forelse($newsList as $news)
     <div class="col">
         <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+        @isset($news->image)
+                <img src="{{ $news->image }}" alt="Изображение">
+            @endisset
+            @empty($news->image)
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+            @endempty
 
             <div class="card-body">
                 <div class="card-header">
@@ -48,5 +53,7 @@
 @empty
     <h3>Новостей в этой категории нет</h3>
 @endforelse
+
+    <div class="col-lg-9 col-md-8 mx-auto">{{ $newsList->links() }}</div>
 </div>
 @endsection 

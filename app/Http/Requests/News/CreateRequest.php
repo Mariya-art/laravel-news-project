@@ -28,9 +28,10 @@ class CreateRequest extends FormRequest
             'source_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'min:5'],
             'status' => ['required', 'string'],
-            'image' => ['nullable', 'file', 'image', 'mimes:jpg,png'],
+            'image' => ['nullable', 'string', 'file', 'image', 'mimes:jpg,png'],
             'description' => ['nullable', 'string', 'max:200'],
             'fulltext' => ['nullable', 'string', 'max:3000'],
+            'created_at' => ['nullable', 'timestamp'],
         ];
     }
 

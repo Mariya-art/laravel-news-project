@@ -12,7 +12,7 @@ class News extends Model
     use HasFactory;
 
     public static $availableFields = [
-        'id', 'title', 'slug', 'status', 'description', 'fulltext'
+        'id', 'title', 'slug', 'status', 'image', 'description', 'fulltext', 'created_at'
     ];
 
     protected $table = 'news';
@@ -22,9 +22,11 @@ class News extends Model
         'source_id',
         'title', 
         'slug', 
+        'status',
+        'image',
         'description', 
-        'fulltext', 
-        'status'
+        'fulltext',
+        'created_at'
     ];
 
     public function category(): BelongsTo

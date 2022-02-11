@@ -12,7 +12,7 @@ class NewsController extends Controller
     {
         $news = News::query()->select(
             News::$availableFields
-        )->get();
+        )->latest()->paginate(15);
 
         $categories = Category::query()->get();
 

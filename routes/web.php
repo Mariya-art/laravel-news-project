@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
@@ -12,7 +13,9 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SourceController as AdminSourceController;
 use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
+use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +50,7 @@ Route::group(['middleware' => 'auth'], function() {
     })->name('account.logout');
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
+        Route::get('/parser', ParserController::class)->name('parser');
         Route::view('/', 'admin.index')->name('index');
         Route::resource('/news', AdminNewsController::class);
         Route::resource('/users', AdminUserController::class);
@@ -80,3 +84,14 @@ Route::get('/session', function() {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/admins', function() { // пример получения списка админов через scope (находится в модели User)
+    $admins = User::query()->admins()->get();
+    dd($admins);
+});
+
+Route::group(['middleware' => 'guest', 'prefix' => 'auth', 'as' => 'social.'], function() {
+    Route::get('/{network}/redirect', [SocialController::class, 'redirect'])->name('redirect');
+
+    Route::get('/{network}/callback', [SocialController::class, 'callback'])->name('callback');
+});

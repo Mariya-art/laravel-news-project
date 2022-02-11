@@ -25,6 +25,7 @@ class NewsController extends Controller
         $news = News::query()->with('category')
             ->with('source')
             //->select(News::$availableFields)
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('admin.news.index', [
