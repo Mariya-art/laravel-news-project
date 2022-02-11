@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Вход') }}</div>
 
                 <div class="card-body">
+                    <a href="{{ route('social.redirect', ['network' => 'vkontakte']) }}">Войти через VKontakte</a><br><br>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -71,3 +72,4 @@
     </div>
 </div>
 @endsection
+

@@ -7,7 +7,12 @@
 @section('content')
 <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
     <div class="col-10 col-sm-8 col-lg-6">
-        <img src="/img/camel.jpg" class="d-block mx-lg-auto img-fluid" alt="camel" width="700" height="500" loading="lazy">
+        @isset($news->image)
+            <img src="{{ $news->image }}" alt="Изображение">
+        @endisset
+        @empty($news->image)
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+        @endempty
     </div>
     <div class="col-lg-6">
         <h1 class="display-5 fw-bold lh-1 mb-3">{{ $news->title }}</h1>

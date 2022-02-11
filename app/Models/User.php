@@ -23,7 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'remember_token',
         'is_admin',
+        'avatar',
     ];
 
     /**
@@ -45,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    public function scopeAdmins($query)
+    {
+        $query->where('is_admin', true);
+    }
 }

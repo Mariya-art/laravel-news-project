@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         $news = News::query()->select(
             News::$availableFields
-        )->where('category_id', $id)->get();
+        )->where('category_id', $id)->paginate();
 
         $categories = Category::query()->get();
         $oneCategory = Category::findOrFail($id);

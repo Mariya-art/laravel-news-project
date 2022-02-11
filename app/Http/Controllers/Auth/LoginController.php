@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserLoginEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -41,7 +42,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user) // можно переопределить и что-то сделать после успешной авторизации
     {
-        $user->last_login_at = now();
-        $user->save();
+        //$user->last_login_at = now(); // перенесли логику в слушателя LastLoginUpdateListener
+        //$user->save();
+        event(new UserLoginEvent($user));
     }
 }
