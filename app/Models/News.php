@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     public static $availableFields = [
         'id', 'title', 'slug', 'status', 'image', 'description', 'fulltext', 'created_at'
@@ -37,6 +37,15 @@ class News extends Model
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class, 'source_id', 'id');
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 
     /*
