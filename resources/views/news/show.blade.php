@@ -18,7 +18,7 @@
         <h1 class="display-5 fw-bold lh-1 mb-3">{{ $news->title }}</h1>
         <em>{!! $news->description !!}</em>     {{-- скобки {!! !!} используем для вывода тегов, указанных в функции getNewsById() в Controller.php --}}
         <br><br>
-        <p class="lead">{{ $news->fulltext }}</p>
+        <p class="lead">{!! $news->fulltext !!}</p>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
             <a href="/" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Все новости</a>
         </div>

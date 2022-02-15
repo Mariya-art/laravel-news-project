@@ -16,7 +16,7 @@
 @section('content')
     @include('inc.message')
     <div>
-        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="form-group">
@@ -42,6 +42,11 @@
                 <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
                 @error('title') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
 
+                <label for="image">Изображение</label>
+                <img src="{{ Storage::disk('public')->url($news->image) }}" style="width:250px;"> &nbsp; <a href="javascript:;">[X]</a>
+                <input type="file" class="form-control" name="image" id="image">
+                @error('image') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
+
                 <label for="description">Краткое описание</label>
                 <textarea class="form-control" name="description" id="description">{!! $news->description !!}</textarea>
                 @error('description') <strong style="color:red;">{{ $message }}</strong> @enderror<br>
@@ -61,3 +66,12 @@
         </form>
     </div>
 @endsection
+@push('js')
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#fulltext' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+@endpush

@@ -45,7 +45,7 @@
                     <div class="btn-group">
                         <a href="{{ route('news.show', ['news' => $news]) }}" type="button" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                     </div>
-                    <small class="text-muted">{{ now('Europe/Moscow') }}</small>
+                    <small class="text-muted">{{ $news->created_at }}</small>
                 </div>
             </div>
         </div>
